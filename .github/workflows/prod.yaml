@@ -1,0 +1,22 @@
+name: Receive Repository Dispatch
+
+on:
+  repository_dispatch:
+    types:
+      - my-custom-event
+
+jobs:
+  receive_dispatch:
+    runs-on: ubuntu-latest
+    steps:
+     - name: git clone
+       run: |
+          git config --global user.email "syedimran@4blabs.com"
+          git config --global user.name "syedimranFB"
+          git clone https://${{ secrets.PAT }}@github.com/syedimranFB/multi-stage-sender.git
+          git clone https://${{ secrets.PAT }}@github.com/syedimranFB/multi-stage-production.git          
+          cp /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-sender/DEMO.txt /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-production
+          cd /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-production
+          git add .
+          git commit -m "production"
+          git push -f --set-upstream https://${{ secrets.PAT }}@github.com/syedimranFB/multi-stage-production.git main
