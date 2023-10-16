@@ -14,7 +14,8 @@ jobs:
           git config --global user.email "syedimran@4blabs.com"
           git config --global user.name "syedimranFB"
           git clone https://${{ secrets.PAT }}@github.com/syedimranFB/multi-stage-sender.git
-          git clone https://${{ secrets.PAT }}@github.com/syedimranFB/multi-stage-production.git          
+          git clone https://${{ secrets.PAT }}@github.com/syedimranFB/multi-stage-production.git
+          ls && pwd          
           cp /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-sender/DEMO.txt /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-production
           cd /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-production
           git add .
