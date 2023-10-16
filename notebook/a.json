@@ -1,0 +1,145 @@
+{
+	"name": "a",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "fbsynapsedemosp",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "fb6a5dfc-d98a-47c8-a852-467cbc03921e"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/d6240a3c-34a4-4a5c-955b-06228bf34ca8/resourceGroups/fb-synapse-demo-rg/providers/Microsoft.Synapse/workspaces/fb-synapse-demo/bigDataPools/fbsynapsedemosp",
+				"name": "fbsynapsedemosp",
+				"type": "Spark",
+				"endpoint": "https://fb-synapse-demo.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/fbsynapsedemosp",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.3",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"!pip install azure-storage-file-datalake\r\n",
+					"!pip install gower\r\n",
+					"!pip install swifter\r\n",
+					"!pip install typer\r\n",
+					"!pip install adlfs\r\n",
+					"!pip install fuzzywuzzy\r\n",
+					"!pip install azure-storage-file-datalake\r\n",
+					"!pip install Levenshtein\r\n",
+					"!pip install seaborn==0.12.0\r\n",
+					"!pip install dython \r\n",
+					"!pip install seaborn==0.12.0\r\n",
+					"!pip install azure-storage-blob\r\n",
+					"\r\n",
+					"\r\n",
+					"from azure.storage.blob import BlobServiceClient\r\n",
+					"import os\r\n",
+					"storage_account_name = 'fbsynapsedemodl'\r\n",
+					"storage_account_key = '2zHvSlf2Y9JZ8DAFpbO8Qfiy2WYTnW6+u7B2SKxVDs7xQYXKAQK2XfaDsvPcG0+yxolU3V/BBndq+AStF/Cs3Q=='\r\n",
+					"container_name = 'fb-synapse-demo-cr'\r\n",
+					"filename = 'src-0.1.0-py2.py3-none-any.whl'\r\n",
+					"\r\n",
+					"# Specify the local destination path for downloading the .whl file\r\n",
+					"local_whl_path = '/mnt/whl_files/src-0.1.0-py2.py3-none-any.whl'\r\n",
+					"\r\n",
+					"# Create the directory if it doesn't exist\r\n",
+					"os.makedirs(os.path.dirname(local_whl_path), exist_ok=True)\r\n",
+					"\r\n",
+					"try:\r\n",
+					"    # Create a BlobServiceClient using your storage account credentials\r\n",
+					"    blob_service_client = BlobServiceClient(account_url=f\"https://{storage_account_name}.blob.core.windows.net\", credential=storage_account_key)\r\n",
+					"\r\n",
+					"    # Get a reference to the container\r\n",
+					"    container_client = blob_service_client.get_container_client(container_name)\r\n",
+					"\r\n",
+					"    # Get a reference to the blob (file) you want to download\r\n",
+					"    blob_client = container_client.get_blob_client(blob=filename)\r\n",
+					"\r\n",
+					"    # Download the .whl file to the local environment\r\n",
+					"    with open(local_whl_path, 'wb') as local_file:\r\n",
+					"        blob_data = blob_client.download_blob()\r\n",
+					"        blob_data.readinto(local_file)\r\n",
+					"\r\n",
+					"    print(\"Downloaded .whl file successfully.\")\r\n",
+					"except Exception as e:\r\n",
+					"    print(f\"Failed to download the .whl file: {e}\")\r\n",
+					"\r\n",
+					"try:\r\n",
+					"    !pip install {local_whl_path} --force-reinstall\r\n",
+					"    print(\"Installation of .whl file completed successfully.\")\r\n",
+					"except Exception as e:\r\n",
+					"    print(f\"Failed to install the .whl file: {e}\")\r\n",
+					"\r\n",
+					"from src.transforms.Run_fusion_ETL_per_country_synapse import Run_fusion_ETL_per_country_synapse\r\n",
+					"import os\r\n",
+					"if (os.path.exists('/home/trusted-service-user/cluster-env/env/lib/python3.10/site-packages/src/.env')): #synapse\r\n",
+					"# if (os.path.exists('./src/.env')):\r\n",
+					"    with open('/home/trusted-service-user/cluster-env/env/lib/python3.10/site-packages/src/.env') as f:\r\n",
+					"        for line in f:\r\n",
+					"            if line.startswith('#') or not line.strip():\r\n",
+					"                continue\r\n",
+					"            key, value = line.strip().split('=', 1)\r\n",
+					"            os.environ[key] = value\r\n",
+					"environment = os.environ.get('ENVIRONMENT')\r\n",
+					"year = os.environ.get('YEAR')\r\n",
+					"\r\n",
+					"file_path = \"/home/trusted-service-user/cluster-env/env/lib/python3.10/site-packages/src/transforms/transforms_synapse.py\"\r\n",
+					"\r\n",
+					"# Read the file content\r\n",
+					"with open(file_path, 'r') as file:\r\n",
+					"    file_content = file.read()\r\n",
+					"\r\n",
+					"# Modify the desired line\r\n",
+					"modified_content = file_content.replace(\"from fusion_utils import Data, PickleSource, do_pandas_test  # noqa: F401\", \"from src.transforms.fusion_utils import (CSVSource, Data, NpEncoder, XLSXSource\")\r\n",
+					"\r\n",
+					"# Write the modified content back to the file\r\n",
+					"with open(file_path, 'w') as file:\r\n",
+					"    file.write(modified_content)\r\n",
+					"    \r\n",
+					"response = Run_fusion_ETL_per_country_synapse(environment, year)\r\n",
+					"print(response)\r\n",
+					""
+				],
+				"execution_count": 28
+			}
+		]
+	}
+}

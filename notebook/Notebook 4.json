@@ -1,0 +1,65 @@
+{
+	"name": "Notebook 4",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "fbsynapsedemosp",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "0a4c3d20-5ba1-4ed0-9c2b-1137dbbf5aba"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/d6240a3c-34a4-4a5c-955b-06228bf34ca8/resourceGroups/fb-synapse-demo-rg/providers/Microsoft.Synapse/workspaces/fb-synapse-demo/bigDataPools/fbsynapsedemosp",
+				"name": "fbsynapsedemosp",
+				"type": "Spark",
+				"endpoint": "https://fb-synapse-demo.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/fbsynapsedemosp",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.3",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"%run 'Notebook 7'"
+				],
+				"execution_count": 1
+			}
+		]
+	}
+}
