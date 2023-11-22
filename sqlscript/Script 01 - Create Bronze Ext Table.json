@@ -1,0 +1,17 @@
+{
+    "name": "Script 01 - Create Bronze Ext Table",
+    "properties": {
+        "content": {
+            "query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t FIRST_ROW = 2,\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'users_edrdatalake_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [users_edrdatalake_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://users@edrdatalake.dfs.core.windows.net' \n\t)\nGO\n\n\n-----------------------------------------------------\n-----------------------------------------------------\n-----------------------------------------------------\n\nIF EXISTS ( SELECT * FROM sys.external_tables \nWHERE object_id = OBJECT_ID('bronze.COMPANY') )\ndrop EXTERNAL TABLE bronze.COMPANY;\n\n\nCREATE EXTERNAL TABLE bronze.COMPANY (\n\t[CompanyID] nvarchar(4000),\n\t[CompanyName] nvarchar(4000),\n\t[CountryCode] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'Test Folder/Sample Data Company.csv',\n\tDATA_SOURCE = [users_edrdatalake_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n-----------------------------------------------------\n-----------------------------------------------------\n-----------------------------------------------------\n\nIF EXISTS ( SELECT * FROM sys.external_tables \nWHERE object_id = OBJECT_ID('bronze.TEAM') )\ndrop EXTERNAL TABLE bronze.TEAM;\n\n\n\nCREATE EXTERNAL TABLE bronze.TEAM (\n\t[CompanyID] bigint,\n\t[TeamID] bigint,\n\t[TeamName] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'Test Folder/Sample Data Team.csv',\n\tDATA_SOURCE = [users_edrdatalake_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO",
+            "metadata": {
+                "language": "sql"
+            },
+            "currentConnection": {
+                "databaseName": "default",
+                "poolName": "Built-in"
+            },
+            "resultLimit": 5000
+        },
+        "type": "SqlQuery"
+    }
+}

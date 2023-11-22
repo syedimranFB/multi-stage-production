@@ -1,0 +1,17 @@
+{
+    "name": "Script 02 - Create Silver View",
+    "properties": {
+        "content": {
+            "query": "-----------------------------------------------------\n-----------------------------------------------------\n-----------------------------------------------------\n\n\nIF EXISTS ( SELECT * FROM sys.views \nWHERE object_id = OBJECT_ID('silver.COMPANY') )\nDROP view silver.COMPANY\nGO \n\ncreate view silver.COMPANY as \n\nSELECT \nCAST (CompanyID as int) as 'CompanyID'\n,CompanyName\n,CountryCode as 'CountryCode3Letter'\nFROM bronze.COMPANY\nwhere CompanyID <> 'xxxx'\n\nGO\n\n\n\n-----------------------------------------------------\n-----------------------------------------------------\n-----------------------------------------------------\n\n\nIF EXISTS ( SELECT * FROM sys.views \nWHERE object_id = OBJECT_ID('silver.TEAM') )\nDROP view silver.TEAM\nGO \n\ncreate view silver.TEAM as \n\nSELECT\nCast (CompanyID as int) as 'CompanyID'\n,cast (TeamID as int) as 'TeamID'\n,TeamName\nfrom bronze.TEAM\n\nGO",
+            "metadata": {
+                "language": "sql"
+            },
+            "currentConnection": {
+                "databaseName": "default",
+                "poolName": "Built-in"
+            },
+            "resultLimit": 5000
+        },
+        "type": "SqlQuery"
+    }
+}
