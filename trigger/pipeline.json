@@ -1,0 +1,26 @@
+{
+	"name": "pipeline",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "test_pipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/fb-synapse-demo-cr/blobs/fb-synapse-demo-cr",
+			"blobPathEndsWith": "fb-synapse-demo-cr",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/d6240a3c-34a4-4a5c-955b-06228bf34ca8/resourceGroups/fb-synapse-demo-rg/providers/Microsoft.Storage/storageAccounts/fbsynapsedemodl",
+			"events": [
+				"Microsoft.Storage.BlobCreated",
+				"Microsoft.Storage.BlobDeleted"
+			]
+		}
+	}
+}

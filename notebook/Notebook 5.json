@@ -1,0 +1,78 @@
+{
+	"name": "Notebook 5",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "fbsynapsedemosp",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "fc6af837-ca93-4a7e-b61c-a9e0710d7256"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/d6240a3c-34a4-4a5c-955b-06228bf34ca8/resourceGroups/fb-synapse-demo-rg/providers/Microsoft.Synapse/workspaces/fb-synapse-demo/bigDataPools/fbsynapsedemosp",
+				"name": "fbsynapsedemosp",
+				"type": "Spark",
+				"endpoint": "https://fb-synapse-demo.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/fbsynapsedemosp",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.3",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"!pip install azure-storage-file-datalake\r\n",
+					"from azure.storage.filedatalake import DataLakeServiceClient\r\n",
+					"\r\n",
+					"account_name = 'fbsynapsedemodl'\r\n",
+					"account_key = '7prkiVQ6rKzmzM1zAOR9jIcsvL5CWFB4VHFY9sstNRXTt1FzimtOGAAxaeYnOg/7UpIvkK4xL0OO+ASt4d8kvg=='\r\n",
+					"\r\n",
+					"service_client = DataLakeServiceClient(account_url=f\"https://{account_name}.dfs.core.windows.net\", credential=account_key)\r\n",
+					"file_system_name = 'fb-synapse-demo-cr'\r\n",
+					"# Get a reference to the file system\r\n",
+					"file_system_client = service_client.get_file_system_client(file_system_name)\r\n",
+					"files = file_system_client.get_paths()\r\n",
+					"\r\n",
+					"for file in files:\r\n",
+					"    print(file)"
+				],
+				"execution_count": 2
+			}
+		]
+	}
+}
