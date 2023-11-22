@@ -2,7 +2,7 @@
     "name": "Script 03 - Create Gold View",
     "properties": {
         "content": {
-            "query": "\n-----------------------------------------------------\n-----------------------------------------------------\n-----------------------------------------------------\n\n-- this is a test commit check prod\nIF EXISTS ( SELECT * FROM sys.views \nWHERE object_id = OBJECT_ID('gold.TEAM') )\nDROP view gold.TEAM\nGO \n\ncreate view gold.TEAM as \n\nSELECT TeamID, TeamName, CompanyName\nfrom silver.TEAM t \njoin silver.COMPANY c on t.CompanyID = c.CompanyID",
+            "query": "\n-----------------------------------------------------\n-----------------------------------------------------\n-----------------------------------------------------\n\n-- devops ci-cd testing, test env - prod env\nIF EXISTS ( SELECT * FROM sys.views \nWHERE object_id = OBJECT_ID('gold.TEAM') )\nDROP view gold.TEAM\nGO \n\ncreate view gold.TEAM as \n\nSELECT TeamID, TeamName, CompanyName\nfrom silver.TEAM t \njoin silver.COMPANY c on t.CompanyID = c.CompanyID",
             "metadata": {
                 "language": "sql"
             },
