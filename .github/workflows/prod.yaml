@@ -9,14 +9,15 @@ jobs:
   receive_dispatch:
     runs-on: ubuntu-latest
     steps:
-     - name: git clone
+     - name: sql scripts
        run: |
           git config --global user.email "syedimran@4blabs.com"
           git config --global user.name "syedimranFB"
           git clone https://${{ secrets.PAT }}@github.com/syedimranFB/multi-stage-sender.git
-          git clone https://${{ secrets.PAT }}@github.com/syedimranFB/multi-stage-production.git
-          ls && pwd          
-          cp /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-sender/DEMO.txt /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-production
+          git clone https://${{ secrets.PAT }}@github.com/syedimranFB/multi-stage-production.git             
+          python /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-production/converter-files/script1.py
+          python /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-production/converter-files/script2.py
+          python /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-production/converter-files/script3.py
           cd /home/runner/work/multi-stage-production/multi-stage-production/multi-stage-production
           git add .
           git commit -m "production"
